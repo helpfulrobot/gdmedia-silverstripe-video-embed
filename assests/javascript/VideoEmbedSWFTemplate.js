@@ -1,0 +1,1 @@
+videojs.options.flash.swf = "$videoembed_swf_file";

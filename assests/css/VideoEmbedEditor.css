@@ -1,0 +1,7 @@
+#Thumbnail .SelectionGroup, #Thumbnail .SelectionGroup li{
+    clear: none;
+}
+
+#Thumbnail #ThumbnailURL {
+    float: right;
+}

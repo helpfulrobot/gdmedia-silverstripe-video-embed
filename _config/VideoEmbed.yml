@@ -1,0 +1,29 @@
+name: VideoEmbed
+---
+VideoEmbed:
+    VideoTypes:
+        vimeo:
+            label: Vimeo
+            hide: "#HTML5Video.upload"
+            show: "#Code.field.text"
+            url: http://vimeo.com/{CODE}
+            pluginFile: vjs.vimeo.js
+            pluginTech: vimeo
+        youtube:
+            label: YouTube
+            hide: "#HTML5Video.upload"
+            show: "#Code.field.text"
+            url: http://www.youtube.com/watch?v={CODE}
+            pluginFile: vjs.youtube.js
+            pluginTech: youtube
+        dailymotion:
+            label: Dailymotion
+            hide: "#HTML5Video.upload"
+            show: "#Code.field.text"
+            url: http://www.dailymotion.com/video/{CODE}_
+            pluginFile: vjs.dailymotion.js
+            pluginTech: dailymotion
+        html5:
+            label: HTML 5/Flash
+            hide: "#Code.field.text"
+            show: "#HTML5Video.upload"
