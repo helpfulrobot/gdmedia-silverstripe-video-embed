@@ -1,0 +1,33 @@
+{
+    "name": "gdmedia/silverstripe-video-embed",
+    "description": "Simple video embedding in silverstripe. Also extends photo gallery to allow videos",
+    "type": "silverstripe-module",
+    "homepage": "https://github.com/guru-digital/silverstripe-video-embed",
+    "keywords": ["silverstripe", "edit", "editor", "admin", "frontend", "front-end"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Corey Sewell - Guru Digital Media",
+            "email": "corey@gdmedia.tv"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/guru-digital/silverstripe-video-embed/issues"
+    },
+    "require": {
+        "silverstripe/cms": ">=3.0.1,<3.2",
+        "composer/installers": "*"
+    },
+    "extra": {
+        "installer-name": "silverstripe-video-embed"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:guru-digital/silverstripe-photogallery"
+        }
+    ],
+    "suggest": {
+        "andrewhoule/silverstripe-photogallery": "Photogallery"
+    }
+}
