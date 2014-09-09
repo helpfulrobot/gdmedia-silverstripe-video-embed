@@ -69,9 +69,9 @@ class VideoEmbed extends DataObject {
     }
 
     public function getCMSFields() {
-        Requirements::css('video-embed/assests/css/VideoEmbedEditor.css');
-        Requirements::javascript('video-embed/assests/javascript/urlParser.min.js');
-        Requirements::javascript('video-embed/assests/javascript/VideoEmbedEditor.js');
+        Requirements::css('silverstripe-video-embed/assests/css/VideoEmbedEditor.css');
+        Requirements::javascript('silverstripe-video-embed/assests/javascript/urlParser.min.js');
+        Requirements::javascript('silverstripe-video-embed/assests/javascript/VideoEmbedEditor.js');
         Requirements::backend()->customScript("var videoEmbedTypes = " . Convert::raw2json($this->GetVideoTypes()) . ";");
         $Fields = parent::getCMSFields();
         $Fields->removeByName('Code');
@@ -269,11 +269,11 @@ class VideoEmbed extends DataObject {
     }
 
     public function forTemplate() {
-        Requirements::css('video-embed/assests/javascript/video-js/video-js.min.css');
-        Requirements::javascript('video-embed/assests/javascript/video-js/video.js');
-        Requirements::javascriptTemplate('video-embed/assests/javascript/VideoEmbedSWFTemplate.js', array("videoembed_swf_file" => Director::absoluteBaseURL() . 'video-embed/assests/javascript/video-js/video-js.swf'), 'VideoEmbed');
+        Requirements::css('silverstripe-video-embed/assests/javascript/video-js/video-js.min.css');
+        Requirements::javascript('silverstripe-video-embed/assests/javascript/video-js/video.js');
+        Requirements::javascriptTemplate('silverstripe-video-embed/assests/javascript/VideoEmbedSWFTemplate.js', array("videoembed_swf_file" => Director::absoluteBaseURL() . 'silverstripe-video-embed/assests/javascript/video-js/video-js.swf'), 'VideoEmbed');
         if ($this->GetSettings()->pluginFile) {
-            Requirements::javascript('video-embed/assests/javascript/video-js/plugins/' . $this->GetSettings()->pluginFile);
+            Requirements::javascript('silverstripe-video-embed/assests/javascript/video-js/plugins/' . $this->GetSettings()->pluginFile);
         }
         return $this->renderWith('VideoEmbed');
     }

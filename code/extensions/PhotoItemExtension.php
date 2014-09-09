@@ -16,7 +16,7 @@ class PhotoItemExtension extends DataExtension {
     private static $plural_name       = "Items";
 
     public function updateCMSFields(FieldList $fields) {
-        Requirements::javascript('video-embed/assests/javascript/PhotoItemExtension.js');
+        Requirements::javascript('silverstripe-video-embed/assests/javascript/PhotoItemExtension.js');
         $typeField  = new DropdownField(
                 'Type', 'Type', singleton('PhotoItem')->dbObject('Type')->enumValues());
         $fields->insertBefore($typeField, 'Photo');
