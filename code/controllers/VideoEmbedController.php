@@ -8,10 +8,14 @@ class videoEmbedController extends Controller {
     );
 
     public function GetOembedData(SS_HTTPRequest $request) {
-        $url    = $request->postVar('url');
-        $oembed = Oembed::get_oembed_from_url($url);
-        $this->getResponse()->addHeader("Content-Type", "application/json; charset=utf-8");
-        echo $oembed->toJson();
+        $response = "{}";
+        $url      = $request->postVar('url');
+        $oembed   = Oembed::get_oembed_from_url($url);
+        if ($oembed->exists()) {
+            $this->getResponse()->addHeader("Content-Type", "application/json; charset=utf-8");
+            $response = $oembed->toJson();
+        }
+        echo $response;
     }
 
 }

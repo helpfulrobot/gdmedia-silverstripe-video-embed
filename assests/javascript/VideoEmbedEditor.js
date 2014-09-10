@@ -75,7 +75,7 @@
                 });
             },
             setSrc: function(thumbUrl) {
-                console.log('$thumbnailURLPreview setSrc');
+                console.log('$thumbnailURLPreview setSrc', thumbUrl);
                 var update = false;
                 if (thumbUrl) {
                     for (i = 0; i < imageExt.length; i++) {
@@ -113,7 +113,7 @@
                         parsedUrl = urlParser.parse(videoCode),
                         videoEmbedType = parsedUrl && parsedUrl.provider ? videoEmbedTypes[parsedUrl.provider] : null,
                         baseHref = $("base").attr("href");
-                console.log(parsedUrl);
+                console.log('$codeField onchange parsedUrl', parsedUrl);
                 if (videoCode) {
                     if (parsedUrl && videoEmbedType) {
                         videoEmbedType = videoEmbedTypes[parsedUrl.provider];
@@ -127,13 +127,15 @@
                             break;
                         }
                     }
+                    console.log('$codeField onchange videoEmbedType.url', videoEmbedType.url.replace("{CODE}", videoCode));
                     if (videoEmbedType.url) {
                         $.post(baseHref + 'videoEmbedController/getOembedData/', {url: videoEmbedType.url.replace("{CODE}", videoCode)}, function(data) {
                             if (data && data.type === "video") {
-                                console.log(data.type);
-                                console.log(data.thumbnail_url);
-                                console.log(data.title);
-                                console.log($thumbnailSelect.val());
+                                console.log('$codeField onchange data.type', data.type);
+                                console.log('$codeField onchange data.thumbnail_url', data.thumbnail_url);
+                                console.log('$codeField onchange data.title', data.title);
+                                console.log('$codeField onchange data.type', data.type);
+                                console.log('$codeField onchange $thumbnailSelect.val()', $thumbnailSelect.val());
                                 if (data.thumbnail_url && $thumbnailSelect.val() === "URL") {
                                     $thumbnailURLField.val(data.thumbnail_url).change();
                                 }
