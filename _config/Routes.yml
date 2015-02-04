@@ -1,0 +1,7 @@
+---
+Name: VideoEmbedRoutes
+After: framework/routes#coreroutes
+---
+Director:
+  rules:
+    'oembed.json//$Action': 'VideoEmbedController'

@@ -175,7 +175,7 @@ class VideoEmbed extends DataObject {
     public function GetUrl() {
         $url = false;
         if ($this->Type == 'HTML 5/Flash' && $this->HTML5Video()->exists()) {
-            $url = $this->HTML5Video()->GetURL();
+            $url = Director::absoluteURL($this->HTML5Video()->GetURL());
         } else {
             $url = $this->GetSettings()->url;
         }
@@ -242,9 +242,17 @@ class VideoEmbed extends DataObject {
             }
             $options['autoplay'] = $this->getAutoPlay() ? 1 : 0;
             $res                 = Oembed::get_oembed_from_url($this->GetSettings()->url, false, $options);
+        } else {
+            $res         = new Oembed_Result($this->GetUrl());
+            $refObject   = new ReflectionObject($res);
+            $refProperty = $refObject->getProperty('data');
+            $refProperty->setAccessible(true);
+            $refProperty->setValue($res, Convert::json2array($this->GetOembedJson()));
+//    }
         }
         return $res;
     }
+
     public function GetMimeType() {
         $res = false;
         if ($this->HTML5Video()) {
@@ -300,6 +308,33 @@ class VideoEmbed extends DataObject {
 
     public function setAutoPlay($autoPlay) {
         $this->autoPlay = $autoPlay;
+    }
+
+    /**
+     *
+     * @param string $url
+     * @return VideoEmbed Description
+     */
+    public static function GetByURL($url) {
+        $result = false;
+        $url    = preg_replace('/_resampled\/[^-]+-/', '', Director::makeRelative($url));
+        $file   = File::get()->filter('Filename', $url)->first();
+        if ($file && $file->exists()) {
+            $result = VideoEmbed::get()->filter('HTML5VideoID', $file->ID)->first();
+        }
+        return $result && $result->exists() ? $result : false;
+    }
+
+    public function GetOembedJson() {
+        $res                = new stdClass();
+        $res->type          = "video";
+        $res->version       = 1.0;
+        $res->title         = $this->Title;
+        $res->thumbnail_url = Director::absoluteURL($this->GetThumbURL());
+        $res->html          = (string) $this->forTemplate();
+        $res->width         = $this->getWidth();
+        $res->height        = $this->getHeight();
+        return Convert::raw2json($res);
     }
 
 }
