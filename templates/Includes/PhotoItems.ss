@@ -3,7 +3,7 @@
     <% loop PaginatedPhotos %>
     <li class="album-photo">
         <% if $Type == "Photo" %>
-        <a href="$PhotoSized(800,800).URL" rel="shadowbox[Gallery]" title="$Caption">
+        <a href="$PhotoSized(800,800).URL" rel="shadowbox[Gallery]" title="$Caption"  style="$ThumbStyle(125,125)">
             <img src="$PhotoCropped(125,125).URL" alt="$Caption" />
             <span></span>
         </a>
