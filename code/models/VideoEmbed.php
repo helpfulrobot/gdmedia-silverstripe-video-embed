@@ -73,9 +73,8 @@ class VideoEmbed extends DataObject {
         Requirements::javascript('silverstripe-video-embed/assests/javascript/urlParser.min.js');
         Requirements::javascript(THIRDPARTY_DIR . '/json-js/json2.js');
         Requirements::javascript('silverstripe-video-embed/assests/javascript/VideoEmbedEditor.js');
-
-
 //        Requirements::backend()->customScript("var videoEmbedTypes = " . Convert::raw2json($this->GetVideoTypes()) . ";");
+  
         $Fields = parent::getCMSFields();
         $Fields->removeByName('Code');
         $Fields->removeByName('HTML5Video');

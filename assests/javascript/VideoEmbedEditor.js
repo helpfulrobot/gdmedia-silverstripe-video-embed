@@ -1,34 +1,42 @@
 (function ($) {
-    function setup() {
-        var $typeSelect = $("#Form_ItemEditForm_Type"),
-                $thumbnailSelect = $("input[name=ThumbnailGroup]", "#Form_ItemEditForm"),
-                $thumbnailURLField = $("#Form_ItemEditForm_ThumbnailURL"),
-                $thumbnailURLPreview = $("#ThumbnailURLPreview"),
-                $thumbnailURLHolder = $("#ThumbnailURLHolder"),
-                $titleField = $("#Form_ItemEditForm_Title"),
-                $codeField = $("#Form_ItemEditForm_Code"),
-                $VideoTypesField = $("#Form_ItemEditForm_VideoTypesHolder"),
-                imageExt = ['jpg', 'jpeg', 'gif', 'png'],
-                videoEmbedTypes = JSON.parse($VideoTypesField.val());
-        function setupVideoEmbedFields(type) {
-            for (var videoEmbedType in videoEmbedTypes) {
-                if (videoEmbedTypes[videoEmbedType].label && videoEmbedTypes[videoEmbedType].label === type) {
-                    if (videoEmbedTypes[videoEmbedType].hide && videoEmbedTypes[videoEmbedType].hide.length) {
-                        $(videoEmbedTypes[videoEmbedType].hide).hide();
-                    }
-                    if (videoEmbedTypes[videoEmbedType].show && videoEmbedTypes[videoEmbedType].show.length) {
-                        $(videoEmbedTypes[videoEmbedType].show).show();
-                    }
-                }
-            }
-        }
+    var $typeSelect = $("#Form_ItemEditForm_Type"),
+            $thumbnailSelect = $("input[name=ThumbnailGroup]", "#Form_ItemEditForm"),
+            $thumbnailURLField = $("#Form_ItemEditForm_ThumbnailURL"),
+            $thumbnailURLPreview = $("#ThumbnailURLPreview"),
+            $thumbnailURLHolder = $("#ThumbnailURLHolder"),
+            $titleField = $("#Form_ItemEditForm_Title"),
+            $codeField = $("#Form_ItemEditForm_Code"),
+            $videoTypesField = $("#Form_ItemEditForm_VideoTypesHolder"),
+            imageExt = ['jpg', 'jpeg', 'gif', 'png'],
+            videoEmbedTypes = {};
 
+    $videoTypesField.entwine({
+        onmatch: function () {
+            videoEmbedTypes = JSON.parse(this.val());
+            entwineFields();
+        }
+    });
+
+    function entwineFields() {
         $typeSelect.entwine({
             onmatch: function () {
-                setupVideoEmbedFields(this.val());
+                this.setupVideoEmbedFields();
             },
             onchange: function () {
-                setupVideoEmbedFields(this.val());
+                this.setupVideoEmbedFields();
+            },
+            setupVideoEmbedFields: function () {
+                var type = this.val();
+                for (var videoEmbedType in videoEmbedTypes) {
+                    if (videoEmbedTypes[videoEmbedType].label && videoEmbedTypes[videoEmbedType].label === type) {
+                        if (videoEmbedTypes[videoEmbedType].hide && videoEmbedTypes[videoEmbedType].hide.length) {
+                            $(videoEmbedTypes[videoEmbedType].hide).hide();
+                        }
+                        if (videoEmbedTypes[videoEmbedType].show && videoEmbedTypes[videoEmbedType].show.length) {
+                            $(videoEmbedTypes[videoEmbedType].show).show();
+                        }
+                    }
+                }
             }
         });
         $thumbnailSelect.entwine({
@@ -132,8 +140,5 @@
                 }
             }
         });
-
-        setupVideoEmbedFields($typeSelect.val());
     }
-    setup();
 })(jQuery);
