@@ -71,8 +71,11 @@ class VideoEmbed extends DataObject {
     public function getCMSFields() {
         Requirements::css('silverstripe-video-embed/assests/css/VideoEmbedEditor.css');
         Requirements::javascript('silverstripe-video-embed/assests/javascript/urlParser.min.js');
+        Requirements::javascript(THIRDPARTY_DIR . '/json-js/json2.js');
         Requirements::javascript('silverstripe-video-embed/assests/javascript/VideoEmbedEditor.js');
-        Requirements::backend()->customScript("var videoEmbedTypes = " . Convert::raw2json($this->GetVideoTypes()) . ";");
+
+
+//        Requirements::backend()->customScript("var videoEmbedTypes = " . Convert::raw2json($this->GetVideoTypes()) . ";");
         $Fields = parent::getCMSFields();
         $Fields->removeByName('Code');
         $Fields->removeByName('HTML5Video');
@@ -129,6 +132,8 @@ class VideoEmbed extends DataObject {
         $fields[] = LiteralField::create("guestLabel", ' <input type="text" name="Value" class="text" id="Form_ItemEditForm_Value">
             </div>
         </div>');
+        $fields[] = new HiddenField("VideoTypesHolder", "VideoTypesHolder", Convert::raw2json($this->GetVideoTypes()));
+
         $Fields->addFieldsToTab('Root.Main', $fields);
 
         return $Fields;

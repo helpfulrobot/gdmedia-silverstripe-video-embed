@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
     function setup() {
         var $typeSelect = $("#Form_ItemEditForm_Type"),
                 $thumbnailSelect = $("input[name=ThumbnailGroup]", "#Form_ItemEditForm"),
@@ -7,9 +7,10 @@
                 $thumbnailURLHolder = $("#ThumbnailURLHolder"),
                 $titleField = $("#Form_ItemEditForm_Title"),
                 $codeField = $("#Form_ItemEditForm_Code"),
-                imageExt = ['jpg', 'jpeg', 'gif', 'png'];
+                $VideoTypesField = $("#Form_ItemEditForm_VideoTypesHolder"),
+                imageExt = ['jpg', 'jpeg', 'gif', 'png'],
+                videoEmbedTypes = JSON.parse($VideoTypesField.val());
         function setupVideoEmbedFields(type) {
-            console.log('setupVideoEmbedFields', type);
             for (var videoEmbedType in videoEmbedTypes) {
                 if (videoEmbedTypes[videoEmbedType].label && videoEmbedTypes[videoEmbedType].label === type) {
                     if (videoEmbedTypes[videoEmbedType].hide && videoEmbedTypes[videoEmbedType].hide.length) {
@@ -23,18 +24,15 @@
         }
 
         $typeSelect.entwine({
-            onmatch: function() {
-                console.log('$typeSelect onmatch');
+            onmatch: function () {
                 setupVideoEmbedFields(this.val());
             },
-            onchange: function() {
-                console.log('$typeSelect onchange');
+            onchange: function () {
                 setupVideoEmbedFields(this.val());
             }
         });
         $thumbnailSelect.entwine({
-            onchange: function() {
-                console.log('$thumbnailSelect onchange');
+            onchange: function () {
                 var selectedVal = this.val();
                 if (selectedVal === "File") {
                     $thumbnailURLField.val("").change();
@@ -44,29 +42,25 @@
             }
         });
         $thumbnailURLField.entwine({
-            onmatch: function() {
-                console.log('$thumbnailURLField onmatch');
+            onmatch: function () {
                 this.data('timeout', null);
                 if (this.val()) {
                     $thumbnailURLPreview.setSrc(this.val());
                 }
             },
-            onkeyup: function() {
-                console.log('$thumbnailURLField onkeyup');
+            onkeyup: function () {
                 clearTimeout($(this).data('timeout'));
-                $(this).data('timeout', setTimeout(function() {
+                $(this).data('timeout', setTimeout(function () {
                     $thumbnailURLPreview.setSrc($thumbnailURLField.val());
                 }, 250));
             },
-            change: function() {
-                console.log('$thumbnailURLField change');
+            change: function () {
                 $thumbnailURLPreview.setSrc($thumbnailURLField.val());
             }
         });
         $thumbnailURLPreview.entwine({
-            onmatch: function() {
-                console.log('$thumbnailURLPreview onmatch');
-                this.load(function() {
+            onmatch: function () {
+                this.load(function () {
                     if ($(this).attr("src") !== "") {
                         $(this).showIt();
                     } else {
@@ -74,8 +68,7 @@
                     }
                 });
             },
-            setSrc: function(thumbUrl) {
-                console.log('$thumbnailURLPreview setSrc', thumbUrl);
+            setSrc: function (thumbUrl) {
                 var update = false;
                 if (thumbUrl) {
                     for (i = 0; i < imageExt.length; i++) {
@@ -95,25 +88,22 @@
                     $thumbnailURLPreview.hideIt();
                 }
             },
-            showIt: function() {
-                console.log('$thumbnailURLPreview showIt');
+            showIt: function () {
                 $thumbnailURLHolder.hide();
                 $(this).show();
             },
-            hideIt: function() {
-                console.log('$thumbnailURLPreview hideIt');
+            hideIt: function () {
                 $(this).hide();
                 $thumbnailURLHolder.show();
             }
         });
         $codeField.entwine({
-            onchange: function() {
+            onchange: function () {
                 var
                         videoCode = this.val(),
                         parsedUrl = urlParser.parse(videoCode),
                         videoEmbedType = parsedUrl && parsedUrl.provider ? videoEmbedTypes[parsedUrl.provider] : null,
                         baseHref = $("base").attr("href");
-                console.log('$codeField onchange parsedUrl', parsedUrl);
                 if (videoCode) {
                     if (parsedUrl && videoEmbedType) {
                         videoEmbedType = videoEmbedTypes[parsedUrl.provider];
@@ -127,15 +117,9 @@
                             break;
                         }
                     }
-                    console.log('$codeField onchange videoEmbedType.url', videoEmbedType.url.replace("{CODE}", videoCode));
                     if (videoEmbedType.url) {
-                        $.post(baseHref + 'videoEmbedController/getOembedData/', {url: videoEmbedType.url.replace("{CODE}", videoCode)}, function(data) {
+                        $.post(baseHref + 'videoEmbedController/getOembedData/', {url: videoEmbedType.url.replace("{CODE}", videoCode)}, function (data) {
                             if (data && data.type === "video") {
-                                console.log('$codeField onchange data.type', data.type);
-                                console.log('$codeField onchange data.thumbnail_url', data.thumbnail_url);
-                                console.log('$codeField onchange data.title', data.title);
-                                console.log('$codeField onchange data.type', data.type);
-                                console.log('$codeField onchange $thumbnailSelect.val()', $thumbnailSelect.val());
                                 if (data.thumbnail_url && $thumbnailSelect.val() === "URL") {
                                     $thumbnailURLField.val(data.thumbnail_url).change();
                                 }
@@ -151,14 +135,5 @@
 
         setupVideoEmbedFields($typeSelect.val());
     }
-    function waitForVideoEmbedTypes() {
-        if (typeof videoEmbedTypes !== 'undefined') {
-            setup();
-        } else {
-            setTimeout(waitForVideoEmbedTypes, 250);
-        }
-    }
-
-    setTimeout(waitForVideoEmbedTypes, 250);
-
+    setup();
 })(jQuery);
