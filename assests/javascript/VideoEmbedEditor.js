@@ -53,7 +53,7 @@
             onmatch: function () {
                 this.data('timeout', null);
                 if (this.val()) {
-                    $thumbnailURLPreview.setSrc(this.val());
+                    $($thumbnailURLPreview.selector).setSrc(this.val());
                 }
             },
             onkeyup: function () {
@@ -75,6 +75,10 @@
                         $(this).hideIt();
                     }
                 });
+                var urlFieldVal = $($thumbnailURLField.selector).val();
+                if (urlFieldVal && urlFieldVal !== this.attr("src")) {
+                    this.setSrc(urlFieldVal);
+                }
             },
             setSrc: function (thumbUrl) {
                 var update = false;
@@ -87,7 +91,7 @@
                     }
                 }
                 if (update) {
-                    if ($(this).attr("src") !== thumbUrl) {
+                    if (this.attr("src") !== thumbUrl) {
                         this.attr("src", thumbUrl);
                     } else {
                         this.showIt();
@@ -97,12 +101,12 @@
                 }
             },
             showIt: function () {
-                $thumbnailURLHolder.hide();
+                $($thumbnailURLHolder.selector).hide();
                 $(this).show();
             },
             hideIt: function () {
                 $(this).hide();
-                $thumbnailURLHolder.show();
+                $($thumbnailURLHolder.selector).show();
             }
         });
         $codeField.entwine({
