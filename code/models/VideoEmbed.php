@@ -73,8 +73,7 @@ class VideoEmbed extends DataObject {
         Requirements::javascript('silverstripe-video-embed/assests/javascript/urlParser.min.js');
         Requirements::javascript(THIRDPARTY_DIR . '/json-js/json2.js');
         Requirements::javascript('silverstripe-video-embed/assests/javascript/VideoEmbedEditor.js');
-//        Requirements::backend()->customScript("var videoEmbedTypes = " . Convert::raw2json($this->GetVideoTypes()) . ";");
-  
+
         $Fields = parent::getCMSFields();
         $Fields->removeByName('Code');
         $Fields->removeByName('HTML5Video');
@@ -280,13 +279,17 @@ class VideoEmbed extends DataObject {
         return '{' . implode(", ", $settings) . '}';
     }
 
-    public function forTemplate() {
+    public function setTemplateRequirements() {
         Requirements::css('silverstripe-video-embed/assests/javascript/video-js/video-js.min.css');
         Requirements::javascript('silverstripe-video-embed/assests/javascript/video-js/video.js');
         Requirements::javascriptTemplate('silverstripe-video-embed/assests/javascript/VideoEmbedSWFTemplate.js', array("videoembed_swf_file" => Director::absoluteBaseURL() . 'silverstripe-video-embed/assests/javascript/video-js/video-js.swf'), 'VideoEmbed');
         if ($this->GetSettings()->pluginFile) {
             Requirements::javascript('silverstripe-video-embed/assests/javascript/video-js/plugins/' . $this->GetSettings()->pluginFile);
         }
+    }
+
+    public function forTemplate() {
+        $this->setTemplateRequirements();
         return $this->renderWith('VideoEmbed');
     }
 
