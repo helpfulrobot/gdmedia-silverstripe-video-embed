@@ -16,7 +16,7 @@ class VideoEmbed extends DataObject {
     private static $db                = array(
         "Code"         => "Text",
         "Title"        => "Varchar(255)",
-        "Type"         => "Enum(array('YouTube', 'Vimeo','Dailymotion', 'HTML 5/Flash'))",
+        "Type"         => "Text",
         "ThumbnailURL" => "Text"
     );
     private static $has_one           = array(
@@ -74,11 +74,20 @@ class VideoEmbed extends DataObject {
         Requirements::javascript(THIRDPARTY_DIR . '/json-js/json2.js');
         Requirements::javascript('silverstripe-video-embed/assests/javascript/VideoEmbedEditor.js');
 
-        $Fields = parent::getCMSFields();
+        $Fields        = parent::getCMSFields();
+        $Fields->removeByName('Type');
         $Fields->removeByName('Code');
         $Fields->removeByName('HTML5Video');
         $Fields->removeByName('ThumbnailURL');
         $Fields->removeByName('ThumbnailFile');
+        $types         = $this->GetVideoTypes();
+        $typeSelection = array();
+        foreach ($types as $type) {
+            if (isset($type["label"])) {
+                $typeSelection[$type["label"]] = $type["label"];
+            }
+        }
+        $Fields->addFieldToTab('Root.Main', new DropdownField("Type", "Type", $typeSelection));
 
         $CodeField  = new TextField("Code", "Code");
         $CodeField->setDescription('
@@ -130,7 +139,7 @@ class VideoEmbed extends DataObject {
         $fields[] = LiteralField::create("guestLabel", ' <input type="text" name="Value" class="text" id="Form_ItemEditForm_Value">
             </div>
         </div>');
-        $fields[] = new HiddenField("VideoTypesHolder", "VideoTypesHolder", Convert::raw2json($this->GetVideoTypes()));
+        $fields[] = new HiddenField("VideoTypesHolder", "VideoTypesHolder", Convert::raw2json($types));
 
         $Fields->addFieldsToTab('Root.Main', $fields);
 
