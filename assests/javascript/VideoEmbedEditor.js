@@ -129,7 +129,7 @@
                             break;
                         }
                     }
-                    if (videoEmbedType.url) {
+                    if (videoEmbedType && videoEmbedType.url) {
                         $.post(baseHref + 'videoEmbedController/getOembedData/', {url: videoEmbedType.url.replace("{CODE}", videoCode)}, function (data) {
                             if (data && data.type === "video") {
                                 if (data.thumbnail_url && $thumbnailSelect.val() === "URL") {
