@@ -5,7 +5,8 @@
  *
  * @author corey
  */
-class HtmlEditorField_Toolbar_Extension extends HtmlEditorField_Toolbar {
+class HtmlEditorField_Toolbar_Extension extends HtmlEditorField_Toolbar
+{
 
     private static $allowed_actions = array(
         'LinkForm',
@@ -14,14 +15,15 @@ class HtmlEditorField_Toolbar_Extension extends HtmlEditorField_Toolbar {
         'getanchors'
     );
 
-    public function viewfile($request) {
+    public function viewfile($request)
+    {
         $result  = false;
         if ($origUrl = $request->getVar('FileURL')) {
             if (Director::is_site_url($origUrl) && VideoEmbed::GetByURL($origUrl)) {
                 $video  = VideoEmbed::GetByURL($origUrl);
                 $result = $this->GetResultForVideo($video);
             }
-        } else if ($fileId = $request->getVar('ID')) {
+        } elseif ($fileId = $request->getVar('ID')) {
             $video  = VideoEmbed::get()->filter(array("HTML5VideoID" => $fileId))->first();
             $result = $this->GetResultForVideo($video);
         }
@@ -29,7 +31,8 @@ class HtmlEditorField_Toolbar_Extension extends HtmlEditorField_Toolbar {
         return $result ? $result : parent::viewfile($request);
     }
 
-    protected function GetResultForVideo($video) {
+    protected function GetResultForVideo($video)
+    {
         $result = false;
         if ($video && $video->exists() && $video->HTML5Video()->exists()) {
             $fileURL     = $video->HTML5Video()->GetURL();
@@ -46,5 +49,4 @@ class HtmlEditorField_Toolbar_Extension extends HtmlEditorField_Toolbar {
         }
         return $result;
     }
-
 }

@@ -9,9 +9,11 @@
  * @property Image $ThumbnailFile Associated Thumbnail image ( empty if ThumbnailURL is used )
  * @property File $HTML5Video Associated video file ( empty if Code is used )
  */
-class VideoEmbedExtension extends DataExtension {
+class VideoEmbedExtension extends DataExtension
+{
 
-    public function GetThumbHeight($y = 120) {
+    public function GetThumbHeight($y = 120)
+    {
         $height = $this->getComponent('PhotoAlbum')->PhotoGallery()->PhotoThumbnailHeight;
         if ($height != 0) {
             $y = $height;
@@ -19,7 +21,8 @@ class VideoEmbedExtension extends DataExtension {
         return $y;
     }
 
-    public function GetThumbWidth($x = 120) {
+    public function GetThumbWidth($x = 120)
+    {
         $width = $this->getComponent('PhotoAlbum')->PhotoGallery()->PhotoThumbnailWidth;
         if ($width != 0) {
             $x = $width;
@@ -27,14 +30,16 @@ class VideoEmbedExtension extends DataExtension {
         return $x;
     }
 
-    public function GetThumbCropped($x = 120, $y = 120) {
+    public function GetThumbCropped($x = 120, $y = 120)
+    {
         $width  = $this->getComponent('PhotoAlbum')->PhotoGallery()->PhotoThumbnailWidth;
         $height = $this->getComponent('PhotoAlbum')->PhotoGallery()->PhotoThumbnailHeight;
-        if ($width != 0)
+        if ($width != 0) {
             $x      = $width;
-        if ($height != 0)
+        }
+        if ($height != 0) {
             $y      = $height;
+        }
         return $this->Photo()->CroppedImage($x, $y);
     }
-
 }

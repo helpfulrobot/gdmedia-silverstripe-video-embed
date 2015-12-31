@@ -1,8 +1,10 @@
 <?php
 
-class PhotoGallery_ControllerExtension extends Extension {
+class PhotoGallery_ControllerExtension extends Extension
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         Requirements::block("photogallery/shadowbox/shadowbox.css");
         Requirements::block("http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");

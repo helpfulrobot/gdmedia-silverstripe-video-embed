@@ -1,10 +1,12 @@
 <?php
 
-class videoEmbedController extends Controller {
+class videoEmbedController extends Controller
+{
 
     private static $allowed_actions = array('getOembedData');
 
-    public function GetOembedData(SS_HTTPRequest $request) {
+    public function GetOembedData(SS_HTTPRequest $request)
+    {
         $response = "{}";
         $this->getResponse()->addHeader("Content-Type", "application/json; charset=utf-8");
         $url      = $request->postVar('url') ? $request->postVar('url') : $request->getVar("mediaurl");
@@ -20,8 +22,8 @@ class videoEmbedController extends Controller {
         echo $response;
     }
 
-    public function index(SS_HTTPRequest $request) {
+    public function index(SS_HTTPRequest $request)
+    {
         return $this->GetOembedData($request);
     }
-
 }

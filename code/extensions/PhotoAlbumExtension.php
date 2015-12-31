@@ -1,11 +1,13 @@
 <?php
 
-class PhotoAlbumExtension extends DataExtension {
+class PhotoAlbumExtension extends DataExtension
+{
 
-    public function GetItems(ArrayList $photoset) {
+    public function GetItems(ArrayList $photoset)
+    {
         $photos = PhotoItem::get()->filter("PhotoAlbumID", $this->owner->ID);
         if ($photos) {
-            foreach ($photos AS $photo) {
+            foreach ($photos as $photo) {
                 if ($photo->getComponent("Photo")->exists()) {
                     $photoset->push($photo);
                 } elseif ($photo->getComponent("VideoItem")->exists()) {
@@ -15,5 +17,4 @@ class PhotoAlbumExtension extends DataExtension {
         }
         return $photoset;
     }
-
 }
